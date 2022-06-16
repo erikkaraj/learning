@@ -1,3 +1,7 @@
 # ingore this 
 node_modules
 package-lock.json
+
+.docker/database/mysql/
+
+.env

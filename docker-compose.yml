@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  learning_backend:
+    container_name: learning_backend
+    build:
+      context: .
+      dockerfile: ./.docker/backend/Dockerfile
+    working_dir: /usr/src/learning_backend
+    restart: on-failure
+    ports:
+      - 3000:3000
+    volumes:
+      - /usr/src/learning_backend/node_modules
+      - ./:/usr/src/learning_backend
+    networks:
+      - learning_network
+
+  learning_database:
+    container_name: learning_database
+    image: mysql:latest
+    platform: linux/x86_64
+    restart: on-failure
+    volumes:
+      - ./.docker/database/mysql:/var/lib/mysql
+    ports:
+      - 3360:3306
+    environment:
+      MYSQL_DATABASE: learning_database
+      MYSQL_ROOT_PASSWORD: learning
+      MYSQL_USER: learning
+      MYSQL_PASSWORD: learning
+    networks:
+      - learning_network
+
+networks:
+  learning_network:
+    driver: bridge
